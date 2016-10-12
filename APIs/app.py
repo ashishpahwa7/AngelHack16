@@ -3,7 +3,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Patient
 
-
 engine = create_engine('sqlite:///patient.db')
 Base.metadata.bind = engine
 
@@ -18,18 +17,22 @@ app = Flask(__name__)
 
 #Make an app.route() decorator here
 @app.route("/")
-@app.route("/get_records/", methods = ['GET', 'POST'])
+@app.route("/get_records", methods = ['GET', 'POST'])
 def puppiesFunction():
   if request.method == 'GET':
     #Call the method to Get all of the records
     return getAllRecords()
   elif request.method == 'POST':
     #Call the method to make create a new record
-    print "Adding a New Patient Record"
+    name = request.args.get('name', '')
+    gender = request.args.get('gender', '')
+    address = request.args.get('address', '')
+    ID = request.args.get('id', '')
+
+    return creatUser(name, gender, address, ID)
     
     #Create new patient record here : #TODO
     
-    return createANewRecord(args)
  
   
 def getAllRecords():
@@ -37,13 +40,16 @@ def getAllRecords():
   return jsonify(Data=[i.serialize for i in data])
 
   
-def createANewRecord(args):
-  data = Patient(name = name, description = description)
+def creatUser(name, gender, address, ID):
+  data = Patient(name = name, gender = gender, address=address, id=ID, file_number=97)
   session.add(data)
   session.commit()
-  return jsonify(Patient=data.serialize)
+  return "Success"
+
+    
+
 
 
 if __name__ == '__main__':
-    app.debug = False
+    app.debug = True
     app.run(host='0.0.0.0', port=5000)  
