@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    h1 Login
+    p Welcome back Doc!!
+    form(method='post', action='/users/loginDoc', enctype='multipart/form-data')
+        input.form-control(name='MCN', type='text', placeholder='Enter username')
+    .form-group
+        label Password
+        input.form-control(name='password', type='password', placeholder='Enter Password')
+
+    input.btn.btn-default(name='Submit', type='submit', value='Login')

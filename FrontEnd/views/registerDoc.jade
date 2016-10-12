@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    h1 Register
+    p Please register using the form below
+    ul.errors
+        if errors
+            each error, i in errors
+                li.alert.alert-danger #{error.msg}
+    form(method='post', action='/users/registerDoc', enctype='multipart/form-data')
+        .form-group
+            label Medical Council Number
+            input.form-control(name='MCN', type='text', placeholder='Enter your registered MCN')
+        .form-group
+            label Email
+            input.form-control(name='email', type='email', placeholder='Enter email here')
+        .form-group
+            label Name
+            input.form-control(name='name', type='text', placeholder='Enter username')
+        .form-group
+            label Password
+            input.form-control(name='password', type='password', placeholder='Enter Password')
+        .form-group
+            label Confirm Password
+            input.form-control(name='password2', type='password', placeholder='Confirm')
+        .form-group
+            label Profile Image
+            input.form-control(name='profileimage', type='file')
+
+        input.btn.btn-default(name='Submit', type='submit', value='Register')
