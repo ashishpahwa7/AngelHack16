@@ -28,6 +28,26 @@ def doctor_form(request):
 	return render(request, 'docform.html',context)
 
 
+def user_login(request):
+
+	if request.method == "POST":
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				#redirect to user home page
+			else:
+				print("Disabled account")
+		else:
+			print("Invalid login")
+
+	return render(request, 'user_login.html', {})
+
+
+
+
 
 
 def patient_checkup(request):
@@ -66,6 +86,8 @@ def doc_login(request):
 def pat_check(request):
 
 	return render(request,'pat_check.html',{})
+
+
 
 
 
