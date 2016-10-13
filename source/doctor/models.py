@@ -32,3 +32,14 @@ class PatientDetails(models.Model):
 
 	def __str__(self):
 		return self.patient_aadhar_no
+
+
+class Person(models.Model):
+
+	user_aadhar_no = models.CharField(max_length=13,null=False)
+	user_gender = models.CharField(max_length=1,null=False)
+	user_dob = models.DateTimeField()
+	user_address = models.CharField(max_length=100,null=False)
+	user_contact = models.CharField(max_length=10)
+	
+

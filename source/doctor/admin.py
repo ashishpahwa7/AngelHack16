@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
-from .models import Doctoral ,PatientDetails
+from .models import Doctoral ,PatientDetails,Person
 
 class DoctoralAdmin(admin.ModelAdmin):
 	list_display = ["enter_government_registered_no","doctor_name", "doctor_email_id", "timestamp"]
@@ -24,4 +24,5 @@ class PatientDetailsAdmin(admin.ModelAdmin):
 		model = PatientDetails
 
 admin.site.register(Doctoral, DoctoralAdmin)
+admin.site.register(Person)
 admin.site.register(PatientDetails, PatientDetailsAdmin)
