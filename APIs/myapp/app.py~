@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Patient
+import os
 
 engine = create_engine('sqlite:///patient.db')
 Base.metadata.bind = engine
@@ -13,6 +14,7 @@ app = Flask(__name__)
 
 # Create the appropriate app.route functions, 
 #test and see if they work
+
 
 
 #Make an app.route() decorator here
