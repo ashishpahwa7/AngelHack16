@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title> Placebo </title>
+	<link rel="shortcut icon" href="{% static 'icon.png' %}">
+	<!-- Bootstrap -->
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+	<!-- Custon CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<section id="main">
+		<img src= "{% static 'logo.png' %}" class="logo"/>
+		<div id="login">
+			<div class="content_inner">
+					<h3> Login </h3>
+			</div>
+			<span class="line"></span>
+			<form action="{% url 'user_login' %}" method = "post">
+				{%	csrf_token	%}
+
+					<label>AADHAR NUMBER</label>
+					<input type="text" name="aadar">
+					<label>DOB</label>
+	
+					<input type="password" name="password">
+					<input type="submit" class="submit">
+			</form>
+
+		</div>
+</section>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Bootstrape JS -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>
