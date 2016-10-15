@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Patient
+from models import Base, Person, Patient
 import os
 
 engine = create_engine('sqlite:///patient.db')
@@ -11,10 +11,6 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 app = Flask(__name__) 
-
-# Create the appropriate app.route functions, 
-#test and see if they work
-
 
 
 #Make an app.route() decorator here
@@ -49,25 +45,118 @@ def awsomeFunctionID(id):
     #return updateUser(name.ID,address,gender) #method to edit user details :TODO
 
 
+## After lot of code loss starting coding the new modules from here :
 
+@app.route("/user_login",methods=['POST'])
+def user_login():
+
+  ID = request.args.get('uid','')
+
+  if request.method== 'POST':
+    return getUser(ID)
+
+
+# adding this route and method just to add new UID holders to database , no practical purpose for this project otherqwise
+@app.route("/create_user", methods=['POST'])
+def create_user():
+
+  uid = request.args.get('uid','')
+  name = request.args.get('name','')
+  adress = request.args.get('adress','')
+  gender = request.args.get('gender','')
+  age = request.args.get('age','')
+  dob = request.args.get('dob','')  
+
+  if request.method == 'POST':
+    return creatUser(uid, name, adress, gender, age, dob)
+
+
+@app.route("/get_patient", methods=['POST'])
+def get_patient():
+
+  ID = request.args.get('uid','')
+
+  if request.method=='POST':
+    return getPatient(ID)
+
+@app.route("/modify_patient/<int:uid>", methods=['GET','PUT','DELETE'])
+def modify_patient(uid):
   
+  height = request.args.get('height', '')
+  weight = request.args.get('weight','')
+
+  if request.method == 'GET':
+    return getPatient(uid)
+
+  elif request.method =='PUT':
+    return updatePatient(uid, height, weight)
+
+  elif request.method =='DELETE':
+     return deletePatient(uid)
+
+
+@app.route("/create_patient", methods=['POST'])
+def create_patient():
+  
+  height = request.args.get('height', '')
+  weight = request.args.get('weight','')
+  uid = request.args.get('uid','')
+  file_number=request.args.get('file','')
+  date = request.args.get('date','')
+
+
+  if request.method=='POST':
+    return createPatient(uid,height,weight,file_number,date)
+
+
+''' 
 def getAllRecords():
   data = session.query(Patient).all()
   return jsonify(Data=[i.serialize for i in data])
-
+'''
   
-def creatUser(name, gender, address, ID):
-  data = Patient(name = name, gender = gender, address=address, id=ID, file_number=97)
+def creatUser(uid, name, adress, gender, age, dob):
+ 
+  data = Person(uid = uid, adress=adress, gender=gender, age=age, dob=dob, name=name)
+  session.add(data)
+  session.commit()
+
+  return "Success"
+
+
+def getUser(id):
+  data = session.query(Person).filter_by(uid = id).one()
+  return jsonify(data=data.serialize)
+
+
+def createPatient(uid,date,height,weight,file_number):
+  data = Patient(uid=uid, height=height, weight=weight, file_number=file_number)
   session.add(data)
   session.commit()
   return "Success"
 
 
-def getUser(id):
-  data = session.query(Patient).filter_by(id = id).one()
-  return jsonify(data=data.serialize)
+def getPatient(id):
+  
+  data = session.query(Patient).filter_by(uid = id).one()
+  return jsonify(data=data.serialize) 
 
-    
+def updatePatient(uid, height, weight):
+  data = session.query(Patient).filter_by(uid = uid).one()
+  data.height = height
+  data.weight = weight
+  
+  session.add(data)
+  session.commit()
+  
+  return "Updated a Patient with file number %s" % uid
+
+def deletePatient(uid):
+  puppy = session.query(Patient).filter_by(uid = uid).one()
+  session.delete(puppy)
+  session.commit()
+  return "Removed Puppy with id %s" % uid
+
 
 if __name__ == '__main__':
     app.debug = True
